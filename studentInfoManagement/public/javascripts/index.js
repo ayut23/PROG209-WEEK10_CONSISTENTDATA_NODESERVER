@@ -49,20 +49,19 @@ document.addEventListener("DOMContentLoaded", function () {
             url: "/addStudent",
             type: "POST",
             data: JSON.stringify(newStudent),
-            contentType:"application/json; charset=utf-8",
-            sucess:function(result){
+            contentType: "application/json; charset=utf-8",
+            sucess: function(result){
                 console.log(result);
                 console.log(studentArray);
-                document.getElementById("name").value="";
-                document.getElementById("age").value="";
-                document.getElementById("education").value="";
-                document.getElementById("graduation").value="";
+                document.getElementById("name").value = "";
+                document.getElementById("age").value = "";
+                document.getElementById("education").value = "";
+                document.getElementById("graduation").value = "";
                 studentArray.length,  // set ID
-                document.getElementById("URL").value="";
+                document.getElementById("URL").value = "";
                 document.location.href = "index.html#ListAll";
                 //createList();
-
-            }
+                }
         });
 
             
@@ -70,43 +69,17 @@ document.addEventListener("DOMContentLoaded", function () {
         // also add the URL value
     });
 
-    // $(document).ready(() => {
-    //     $("#photo").change(function () {
-    //         const file = this.files[0];
-    //         if (file) {
-    //             let reader = new FileReader();
-    //             reader.onload = function (event) {
-    //                 $("#imgPreview")
-    //                   .attr("src", event.target.result);
-    //             };
-    //             reader.readAsDataURL(file);
-    //         }
-    //     });
-    // });
-
-    
-
-
     document.getElementById("buttonClear").addEventListener("click", function () {
         document.getElementById("name").value = "";
         document.getElementById("age").value = "";
-        document.getElementById("man").value = "";
-        document.getElementById("woman").value = "";
+        document.getElementById("education").value = "";
+        document.getElementById("graduation").value = "";
         document.getElementById("URL").value = "";
     });
 
     $(document).bind("change", "#select-major", function (event, ui) {
         selectedMajor = $('#select-major').val();
     });
-
-
-
-
-
-
-
-
-
 
 
 
@@ -126,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (filteredStudents.length > 0) {
           filteredStudents.forEach(function(student) {
             let listItem = document.createElement("li");
-            listItem.textContent = "student Name is : "+student.StudentName;
+            listItem.textContent = "student Name is : " + student.StudentName;
             listItem.addEventListener("click", function() {
              
             });
@@ -148,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         studentArray.sort(dynamicSort("StudentName"));
         createList();
-        //new find function
         document.location.href = "index.html#ListAll";
         
     });

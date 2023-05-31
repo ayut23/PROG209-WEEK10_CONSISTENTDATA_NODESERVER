@@ -2,34 +2,33 @@ var express = require('express');
 var router = express.Router();
 var fs = require("fs");
 
-
 let studentArray = [];
 
 let fileManager = {
-  
-      read: function() {
-        if(!fileManager.validData()) {
-        var rawdata = fs.readFileSync('objectdata.json');
-        let goodData = JSON.parse(rawdata);
-        studentArray = goodData;
+  read: function() {
+    if(!fileManager.validData()) {
+      var rawdata = fs.readFileSync('objectdata.json');
+      let goodData = JSON.parse(rawdata);
+      studentArray = goodData;
     }
   },
-      write: function() {
-        let data = JSON.stringify(studentArray);
-        fs.writeFileSync('objectdata.json', data);
-    },
-      validData: function() {
-        var rawdata = fs.readFileSync('objectdata.json');
-        console.log(rawdata.length);
-          if(rawdata.length < 1) {
-              return false;
-              }
-          else {
-              return true;
-    }
+
+  write: function() {
+    let data = JSON.stringify(studentArray);
+    fs.writeFileSync('objectdata.json', data);
+  },
+
+  validData: function() {
+    var rawdata = fs.readFileSync('objectdata.json');
+    console.log(rawdata.length);
+      if(rawdata.length < 1) {
+        return false;
+      }
+      else {
+        return true;
+      }
   }
 };
-
 
 
 let StudentObject = function (pStudentName, pAge, pMajor, pEducation, pGraduation, pURL) {
@@ -52,7 +51,7 @@ if(!fileManager.validData()){
     studentArray.push(new StudentObject("John", 20, "Accounting", "Bachelor's Degree", "2023", "https://www.linkedin.com/in/khant-nyunt-940aba206/"));
     fileManager.write();
 }
-else{
+else {
   fileManager.read();
 }
 
@@ -73,5 +72,33 @@ router.post('/addStudent', function(req, res){
   fileManager.write();
 	res.status(200).json(newStudent);
 });
+
+// add route for delete
+router.delete('/deleteStudent/:ID', (req, res) => {
+  const delID = req.params.ID;
+
+  let found = false;
+  let poinetr = GetArrayPointer(delID);
+  if (pointer == -1) {
+    console.log("not found");
+    return res.status(500).json({
+      status: "error - no such ID"
+    });
+  }
+  else {        // if the student was found
+    studentArray.splice(pointer, 1);   // remove 1 element at index
+    fileManager.write();
+    res.send('Student with ID: ' + delID + ' deleted!');
+  }
+});
+
+// cycles through the array to find the array element with a matching ID
+function GetArrayPointer(localID) {
+  for (let i = 0; i < studentArray.length; i++) {
+    if (localID === studentArray[i].ID) {
+      return i;
+    }
+  }
+}
 
 module.exports = router;
