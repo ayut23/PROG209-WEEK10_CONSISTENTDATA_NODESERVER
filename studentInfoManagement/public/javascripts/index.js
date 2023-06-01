@@ -1,3 +1,5 @@
+
+let sort = "None";  
 // // start by creating data so we don't have to type it in each time
  let studentArray = [];
 
@@ -115,19 +117,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-      
+
 
     document.getElementById("buttonSortName").addEventListener("click", function () {
-
-        studentArray.sort(dynamicSort("StudentName"));
-        createList();
+        let sort = "Name";
+        //studentArray.sort(dynamicSort("StudentName"));
+        createList(sort);
         document.location.href = "index.html#ListAll";
         
     });
 
     document.getElementById("buttonSortMajor").addEventListener("click", function () {
-        studentArray.sort(dynamicSort("Major"));
-        createList();
+        let sort = "Major";
+        //studentArray.sort(dynamicSort("Major"));
+        createList(sort);
         document.location.href = "index.html#ListAll";
     });
 
@@ -166,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });  
 // end of wait until document has loaded event  *************************************************************************
 
-function createList() {
+function createList(value) {
     // clear prior data
    let myUL = document.getElementById("StudentListul");
    myUL.innerHTML = "";
@@ -188,6 +191,16 @@ function createList() {
         myUL.appendChild(myLi);
     });
 
+
+    if (value = "Name") {
+        studentArray.sort(dynamicSort("StudentName"));
+    }
+    else if (value = "Major") {
+        studentArray.sort(dynamicSort("StudentMajor"));
+    }
+    else {
+        return studentArray;
+    }
 
     
     // now we have the HTML done to display out list, 
