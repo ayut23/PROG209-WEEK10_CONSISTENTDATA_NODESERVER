@@ -1,39 +1,34 @@
 
-let sort = "None";  
+let sort = "None";
+
 // // start by creating data so we don't have to type it in each time
- let studentArray = [];
+let studentArray = [];
 
 // // define a constructor to create student objects
- let StudentObject = function (pStudentName, pAge, pMajor, pEducation, pGraduation, pURL) {
+let StudentObject = function (pStudentName, pAge, pMajor, pEducation, pGraduation, pURL) {
 
-     this.StudentName = pStudentName;
-     this.Age = pAge;
-     //this.ID = studentArray.length + 1;
-     this.ID = Math.random().toString(16).slice(5);
-     this.Major = pMajor;  // computer science, nursing, etc.
-     this.Education = pEducation;
-     this.Graduation = pGraduation;
-     this.URL = pURL;
- }
-
-
+    this.StudentName = pStudentName;
+    this.Age = pAge;
+    //this.ID = studentArray.length + 1;
+    this.ID = Math.random().toString(16).slice(5);
+    this.Major = pMajor;  // computer science, nursing, etc.
+    this.Education = pEducation;
+    this.Graduation = pGraduation;
+    this.URL = pURL;
+}
 
 // studentArray.push(new StudentObject("Khant Nyunt", 24, "Computer Science", "Bachelor's Degree", "2025", "https://www.linkedin.com/in/khant-nyunt-940aba206/"));
 // studentArray.push(new StudentObject("Justin", 21, "Digital Marketing", "Associate Degree", "2027", "https://www.linkedin.com/in/khant-nyunt-940aba206/"));
 // studentArray.push(new StudentObject("Sarah", 21, "Business Management", "Certificate", "2024", "https://www.linkedin.com/in/khant-nyunt-940aba206/"));
 // studentArray.push(new StudentObject("John", 20, "Accounting", "Bachelor's Degree", "2023", "https://www.linkedin.com/in/khant-nyunt-940aba206/"));
 
-
-
-
 let selectedMajor = "not selected";
 
 let student = "";
 
-
 document.addEventListener("DOMContentLoaded", function () {
 
-    createList();
+    createList(sort);
     
 // add button events ************************************************************************
     
@@ -52,23 +47,17 @@ document.addEventListener("DOMContentLoaded", function () {
             type: "POST",
             data: JSON.stringify(newStudent),
             contentType: "application/json; charset=utf-8",
-            sucess: function(result){
+            success: function(result){
                 console.log(result);
-                console.log(studentArray);
                 document.getElementById("name").value = "";
                 document.getElementById("age").value = "";
                 document.getElementById("education").value = "";
                 document.getElementById("graduation").value = "";
-                studentArray.length,  // set ID
                 document.getElementById("URL").value = "";
                 document.location.href = "index.html#ListAll";
-                //createList();
                 }
         });
 
-            
-
-        // also add the URL value
     });
 
     document.getElementById("buttonClear").addEventListener("click", function () {
@@ -82,8 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
     $(document).bind("change", "#select-major", function (event, ui) {
         selectedMajor = $('#select-major').val();
     });
-
-
 
 //SEARCH button 
 //return Student Name //Not Clickable
@@ -113,12 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
 
-
-
-
-
-
-
     document.getElementById("buttonSortName").addEventListener("click", function () {
         let sort = "Name";
         //studentArray.sort(dynamicSort("StudentName"));
@@ -145,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // page before show code
 
     $(document).on("pagebeforeshow", "#ListAll", function (event) {   // have to use jQuery 
-        createList();
+        createList(sort);
     });
 
 
@@ -180,6 +161,13 @@ function createList(value) {
 	studentArray = data;
 
 
+    if (value == "Name") {
+        studentArray.sort(dynamicSort("StudentName"));
+    }
+    else if (value == "Major") {
+        studentArray.sort(dynamicSort("Major"));
+    }
+
     studentArray.forEach(function (oneStudent) {   // use handy array forEach method
         var myLi = document.createElement('li');
         // adding a class name to each one as a way of creating a collection
@@ -190,18 +178,6 @@ function createList(value) {
         myLi.innerHTML = oneStudent.ID + ". " + oneStudent.StudentName + ", enrolled in" + "   "+ oneStudent.Major;
         myUL.appendChild(myLi);
     });
-
-
-    if (value = "Name") {
-        studentArray.sort(dynamicSort("StudentName"));
-    }
-    else if (value = "Major") {
-        studentArray.sort(dynamicSort("StudentMajor"));
-    }
-    else {
-        return studentArray;
-    }
-
     
     // now we have the HTML done to display out list, 
     // next we make them active buttons
